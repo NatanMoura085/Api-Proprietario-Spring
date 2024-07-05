@@ -1,7 +1,10 @@
 package com.algaworks.algatransito.api.controller;
 
+import com.algaworks.algatransito.domain.exception.NegocioException;
 import com.algaworks.algatransito.domain.model.Proprietario;
 import com.algaworks.algatransito.domain.repository.ProprietarioRepository;
+import com.algaworks.algatransito.domain.service.RegistroProprietarioService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,7 @@ import java.util.List;
 public class ProprietarioController {
 
 private final ProprietarioRepository proprietarioRepository;
+private final RegistroProprietarioService registroProprietarioService;
 
     @GetMapping
     public List<Proprietario> listar() {
@@ -35,20 +39,20 @@ private final ProprietarioRepository proprietarioRepository;
 
    @PostMapping
    @ResponseStatus(HttpStatus.CREATED)
-   public Proprietario cadastraProprieatrio(@RequestBody Proprietario proprietario){
-        return proprietarioRepository.save(proprietario);
+   public Proprietario cadastraProprieatrio(@Valid @RequestBody Proprietario proprietario){
+        return registroProprietarioService.salvar(proprietario);
    }
 
 
 
    @PutMapping("/{id}")
-   public ResponseEntity<Proprietario> atualizatDados(@PathVariable Long id, @RequestBody Proprietario proprietario){
+   public ResponseEntity<Proprietario> atualizatDados(@PathVariable Long id, @Valid @RequestBody Proprietario proprietario){
         if (!proprietarioRepository.existsById(id)){
             return ResponseEntity.notFound().build();
         }
         proprietario.setId(id);
 
-        Proprietario proprietarioAtualizado = proprietarioRepository.save(proprietario);
+        Proprietario proprietarioAtualizado = registroProprietarioService.salvar(proprietario);
 
         return ResponseEntity.ok(proprietarioAtualizado);
    }
@@ -59,7 +63,12 @@ private final ProprietarioRepository proprietarioRepository;
             return ResponseEntity.notFound().build();
         }
 
-        proprietarioRepository.deleteById(id);
+        registroProprietarioService.excluir(id);
         return ResponseEntity.noContent().build();
+   }
+
+   @ExceptionHandler(NegocioException.class)
+   public ResponseEntity<String> capturarExceçoes(NegocioException e){
+        return ResponseEntity.badRequest().body(e.getMessage());
    }
 }
