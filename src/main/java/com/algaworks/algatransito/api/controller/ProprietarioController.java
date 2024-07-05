@@ -3,11 +3,11 @@ package com.algaworks.algatransito.api.controller;
 import com.algaworks.algatransito.domain.model.Proprietario;
 import com.algaworks.algatransito.domain.repository.ProprietarioRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/proprietarios")
@@ -34,7 +34,32 @@ private final ProprietarioRepository proprietarioRepository;
 
 
    @PostMapping
+   @ResponseStatus(HttpStatus.CREATED)
    public Proprietario cadastraProprieatrio(@RequestBody Proprietario proprietario){
         return proprietarioRepository.save(proprietario);
+   }
+
+
+
+   @PutMapping("/{id}")
+   public ResponseEntity<Proprietario> atualizatDados(@PathVariable Long id, @RequestBody Proprietario proprietario){
+        if (!proprietarioRepository.existsById(id)){
+            return ResponseEntity.notFound().build();
+        }
+        proprietario.setId(id);
+
+        Proprietario proprietarioAtualizado = proprietarioRepository.save(proprietario);
+
+        return ResponseEntity.ok(proprietarioAtualizado);
+   }
+
+   @DeleteMapping("/{id}")
+   public ResponseEntity<Void> remover(@PathVariable Long id){
+        if (!proprietarioRepository.existsById(id)){
+            return ResponseEntity.notFound().build();
+        }
+
+        proprietarioRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
    }
 }
