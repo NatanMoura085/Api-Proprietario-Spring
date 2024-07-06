@@ -12,7 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class RegistroProprietarioService {
     private final ProprietarioRepository proprietarioRepository;
 
-
+public Proprietario buscar(Long id){
+    return proprietarioRepository.findById(id)
+            .orElseThrow(()-> new NegocioException("Proprietario Nao encontrado"));
+}
     @Transactional
     public Proprietario salvar(Proprietario proprietario){
         boolean emailEmUso = proprietarioRepository.findByEmail(proprietario.getEmail())
