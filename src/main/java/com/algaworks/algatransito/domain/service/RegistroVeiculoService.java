@@ -33,7 +33,7 @@ public class RegistroVeiculoService {
         }
 
         if (placaEmUso){
-            throw new NegocioException("placa não encontrada");
+            throw new NegocioException("placa ja esta em uso");
         }
 
         Proprietario proprietario = registroProprietarioService.buscar(novoveiculo.getProprietario().getId());
