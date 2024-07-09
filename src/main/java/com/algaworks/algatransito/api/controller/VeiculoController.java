@@ -1,5 +1,6 @@
 package com.algaworks.algatransito.api.controller;
 
+import com.algaworks.algatransito.api.dto.VeiculoDTO;
 import com.algaworks.algatransito.domain.exception.NegocioException;
 import com.algaworks.algatransito.domain.model.Veiculo;
 import com.algaworks.algatransito.domain.repository.VeiculoRepository;
@@ -27,8 +28,21 @@ public class VeiculoController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Veiculo> buscaPeloID(@PathVariable Long id){
-        return veiculoRepository.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<VeiculoDTO> buscaPeloID(@PathVariable Long id){
+        return veiculoRepository.findById(id).map(veiculo->{
+              VeiculoDTO veiculoDTO = new VeiculoDTO();
+              veiculoDTO.setId(veiculo.getId());
+              veiculoDTO.setMarca(veiculo.getMarca());
+              veiculoDTO.setNomeDoProprietario(veiculo.getProprietario().getNome());
+              veiculoDTO.setStatus(veiculo.getStatus());
+              veiculoDTO.setModelo(veiculo.getModelo());
+              veiculoDTO.setPlaca(veiculo.getPlaca());
+              veiculoDTO.setDataCadastro(veiculo.getDataCadastro());
+              veiculoDTO.setDataApreensao(veiculo.getDataApreensao());
+              return veiculoDTO;
+                })
+
+                .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping

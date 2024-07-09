@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 @Getter
@@ -39,8 +39,8 @@ public class Veiculo {
    private String placa;
    @Enumerated(EnumType.STRING)
    private StatusVeiculo status;
-   private LocalDateTime dataCadastro;
-   private LocalDateTime dataApreensao;
+   private OffsetDateTime dataCadastro;
+   private OffsetDateTime dataApreensao;
 
 
 }
