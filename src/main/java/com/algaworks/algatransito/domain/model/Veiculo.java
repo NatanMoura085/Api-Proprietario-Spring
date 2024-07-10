@@ -14,6 +14,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,6 +31,8 @@ public class Veiculo {
    @NotNull
    @ManyToOne
    private Proprietario proprietario;
+   @OneToMany(mappedBy = "veiculo")
+   private List<Autuacao> autuacaos = new ArrayList<>();
    @NotBlank
    @Size(min = 2)
    private String marca;
