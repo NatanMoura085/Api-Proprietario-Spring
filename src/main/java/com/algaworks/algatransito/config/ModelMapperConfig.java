@@ -11,8 +11,8 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper(){
         var modelMapper = new ModelMapper();
-        modelMapper.createTypeMap(Veiculo.class, VeiculoDTO.class)
-                .addMappings(mapper -> mapper.map(Veiculo::getProprietario,VeiculoDTO::setProprietario));
+        modelMapper.createTypeMap(Veiculo.class, VeiculoDTO.class);
+
         return  modelMapper;
     }
 }

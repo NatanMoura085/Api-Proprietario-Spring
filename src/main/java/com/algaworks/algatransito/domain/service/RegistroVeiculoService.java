@@ -36,6 +36,9 @@ public class RegistroVeiculoService {
         if (placaEmUso){
             throw new NegocioException("placa ja esta em uso");
         }
+        if (novoveiculo.getProprietario() == null || novoveiculo.getProprietario().getId() == null) {
+            throw new NegocioException("O proprietário do veículo é obrigatório e deve ter um ID válido.");
+        }
 
         Proprietario proprietario = registroProprietarioService.buscar(novoveiculo.getProprietario().getId());
 

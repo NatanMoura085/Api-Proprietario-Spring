@@ -1,6 +1,8 @@
 package com.algaworks.algatransito.api.controller;
 
+import com.algaworks.algatransito.api.assembler.VeiculoAssembler;
 import com.algaworks.algatransito.api.dto.VeiculoDTO;
+import com.algaworks.algatransito.api.dto.inputDTO.VeiculoInputDTO;
 import com.algaworks.algatransito.config.ModelMapperConfig;
 import com.algaworks.algatransito.domain.exception.NegocioException;
 import com.algaworks.algatransito.domain.model.Veiculo;
@@ -22,25 +24,26 @@ public class VeiculoController {
 
     private VeiculoRepository veiculoRepository;
     private RegistroVeiculoService registroVeiculoService;
-    private ModelMapperConfig modelMapperConfig;
+    private  final VeiculoAssembler veiculoAssembler;
     @GetMapping
-    public List<Veiculo> busca(){
-        return veiculoRepository.findAll();
+    public List<VeiculoDTO> busca(){
+        return veiculoAssembler.toCollectionMap(veiculoRepository.findAll());
     }
 
 
     @GetMapping("/{id}")
     public ResponseEntity<VeiculoDTO> buscaPeloID(@PathVariable Long id){
-        return veiculoRepository.findById(id).map(veiculo->
-               modelMapperConfig.modelMapper().map(veiculo,VeiculoDTO.class))
+        return veiculoRepository.findById(id).map(veiculoAssembler::toModelMap)
                 .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Veiculo cadastrarVeiculo(@Valid @RequestBody Veiculo veiculo){
-        return registroVeiculoService.cadastrar(veiculo);
+    public VeiculoDTO cadastrarVeiculo(@Valid @RequestBody VeiculoInputDTO veiculoInputDTO){
+        Veiculo novoVeiculo = veiculoAssembler.toEntity(veiculoInputDTO);
+        Veiculo veiculoCadastrado = registroVeiculoService.cadastrar(novoVeiculo);
+        return veiculoAssembler.toModelMap(veiculoCadastrado);
     }
 
 }

@@ -13,7 +13,7 @@ public class VeiculoDTO {
     private String marca;
     private String modelo;
     private String placa;
-    private String Proprietario;
+    private ProprietarioResumoDTO proprietario;
     private StatusVeiculo status;
     private OffsetDateTime dataCadastro;
     private OffsetDateTime dataApreensao;
