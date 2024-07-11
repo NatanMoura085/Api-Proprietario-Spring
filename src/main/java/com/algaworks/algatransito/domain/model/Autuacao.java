@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,4 +24,6 @@ public class Autuacao {
     private String descricao;
     private BigDecimal valorMultar;
     private OffsetDateTime dataOcorrencia;
+
+
 }

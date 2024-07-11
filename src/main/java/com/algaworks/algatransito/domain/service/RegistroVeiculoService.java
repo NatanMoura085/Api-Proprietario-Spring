@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Service
@@ -20,6 +19,11 @@ public class RegistroVeiculoService {
     private ProprietarioRepository proprietarioRepository;
     private RegistroProprietarioService registroProprietarioService;
 
+
+
+    public Veiculo buscar(Long id){
+        return veiculoRepository.findById(id).orElseThrow(()-> new NegocioException("nao achou veiculo"));
+    }
     @Transactional
     public Veiculo cadastrar(Veiculo novoveiculo){
 

@@ -31,7 +31,7 @@ public class Veiculo {
    @NotNull
    @ManyToOne
    private Proprietario proprietario;
-   @OneToMany(mappedBy = "veiculo")
+   @OneToMany(mappedBy = "veiculo",cascade = CascadeType.ALL)
    private List<Autuacao> autuacaos = new ArrayList<>();
    @NotBlank
    @Size(min = 2)
@@ -46,5 +46,12 @@ public class Veiculo {
    private OffsetDateTime dataCadastro;
    private OffsetDateTime dataApreensao;
 
+   public Autuacao adicionarAtuacao(Autuacao autuacao){
+      autuacao.setDataOcorrencia(OffsetDateTime.now());
+      autuacao.setVeiculo(this);
+      getAutuacaos().add(autuacao);
+      return autuacao;
 
+
+   }
 }
