@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 @Setter
 public class AutuacaoInputDTO {
 
-  @NotBlank
+    @NotBlank
     private String descricao;
     @NotNull
     @Positive
