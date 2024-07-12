@@ -1,5 +1,6 @@
 package com.algaworks.algatransito.domain.model;
 
+import com.algaworks.algatransito.domain.exception.NegocioException;
 import com.algaworks.algatransito.domain.validation.ValidationGroups;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -54,4 +55,38 @@ public class Veiculo {
 
 
    }
+
+
+   public void apreender(){
+      if (estaApreender()){
+         throw new NegocioException("veiculo ja esta apreendido");
+      }
+
+      setStatus(StatusVeiculo.APREENSAO);
+      setDataApreensao(OffsetDateTime.now());
+   }
+   public boolean estaApreender(){
+      return StatusVeiculo.APREENSAO.equals(getStatus());
+   }
+
+
+   public void  removerApreensao(){
+      if (naoEstaApreendido()){
+         throw new NegocioException("veiculo nao esta Apreendido");
+      }
+
+      setStatus(StatusVeiculo.REGULAR);
+      setDataApreensao(null);
+
+
+
+   }
+
+
+   public boolean naoEstaApreendido(){
+      return !estaApreender();
+   }
 }
+
+
+

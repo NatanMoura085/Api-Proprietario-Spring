@@ -1,5 +1,6 @@
 package com.algaworks.algatransito.domain.model;
 
+import com.algaworks.algatransito.domain.exception.NegocioException;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,6 +25,5 @@ public class Autuacao {
     private String descricao;
     private BigDecimal valorMultar;
     private OffsetDateTime dataOcorrencia;
-
 
 }

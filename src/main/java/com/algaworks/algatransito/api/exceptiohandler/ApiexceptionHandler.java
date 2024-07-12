@@ -1,5 +1,6 @@
 package com.algaworks.algatransito.api.exceptiohandler;
 
+import com.algaworks.algatransito.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algatransito.domain.exception.NegocioException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -38,6 +39,14 @@ public class ApiexceptionHandler extends ResponseEntityExceptionHandler {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle(e.getMessage());
         problemDetail.setType(URI.create("http://localhost:8081/errors/regra-de-negocio"));
+        return problemDetail;
+    }
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ProblemDetail entidadeHandler(EntidadeNaoEncontradaException e){
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problemDetail.setTitle(e.getMessage());
+        problemDetail.setType(URI.create("http://localhost:8081/errors/entidade-nao-encontrada"));
         return problemDetail;
     }
 

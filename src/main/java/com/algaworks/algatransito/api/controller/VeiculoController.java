@@ -7,6 +7,7 @@ import com.algaworks.algatransito.config.ModelMapperConfig;
 import com.algaworks.algatransito.domain.exception.NegocioException;
 import com.algaworks.algatransito.domain.model.Veiculo;
 import com.algaworks.algatransito.domain.repository.VeiculoRepository;
+import com.algaworks.algatransito.domain.service.ApreensaoVeiculoService;
 import com.algaworks.algatransito.domain.service.RegistroVeiculoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -22,9 +23,10 @@ import java.util.Optional;
 @RequestMapping("veiculos")
 public class VeiculoController {
 
-    private VeiculoRepository veiculoRepository;
-    private RegistroVeiculoService registroVeiculoService;
-    private  final VeiculoAssembler veiculoAssembler;
+    private final VeiculoRepository veiculoRepository;
+    private final RegistroVeiculoService registroVeiculoService;
+    private final ApreensaoVeiculoService apreensaoVeiculoService;
+    private final VeiculoAssembler veiculoAssembler;
     @GetMapping
     public List<VeiculoDTO> busca(){
         return veiculoAssembler.toCollectionMap(veiculoRepository.findAll());
@@ -44,6 +46,19 @@ public class VeiculoController {
         Veiculo novoVeiculo = veiculoAssembler.toEntity(veiculoInputDTO);
         Veiculo veiculoCadastrado = registroVeiculoService.cadastrar(novoVeiculo);
         return veiculoAssembler.toModelMap(veiculoCadastrado);
+    }
+
+    @PutMapping("/{veiculoId}/apreensao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void apreender(@PathVariable Long veiculoId){
+      apreensaoVeiculoService.apreender(veiculoId);
+
+    }
+
+    @DeleteMapping("/{veiculoId}/apreensao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removerAprensao(@PathVariable Long veiculoId){
+        apreensaoVeiculoService.removerApreensao(veiculoId);
     }
 
 }
